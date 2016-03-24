@@ -10,9 +10,10 @@ Easy to use testing tool for writing specifications and acceptance tests
  - ec-specs
  - ec-specs.bat 
 3. Make sure that Java 8 is available on the system as either a JDK or a JRE. Open a command terminal and type the following command to confirm the java version:
-> java -version
 
-If the command does not return java 8 in the version information, then make sure JDK 8 or JRE 8 is installed and the PATH environment variable is set to point to the installed Java 8 version.
+  > java -version
+
+  If the command does not return java 8 in the version information, then make sure JDK 8 or JRE 8 is installed and the PATH environment variable is set to point to the installed Java 8 version.
 
 4. Open a command terminal and type the following to run the samples/BasicSpec.groovy specification test.
 > c:\tools\ec-specs-tool\ec-specs.bat c:\tools\ec-specs-tool\samples\BasicSpec.groovy
