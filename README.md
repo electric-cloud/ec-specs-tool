@@ -1,6 +1,10 @@
 # ec-specs-tool
 Easy to use testing tool for writing specifications and acceptance tests
 
+# Latest release
+
+https://github.com/electric-cloud/ec-specs-tool/releases/latest
+
 # Steps to use Specs 
 
 1. Unzip the file ec-specs-tool.zip into a directory, say 'c:\tools\ec-specs-tool'
