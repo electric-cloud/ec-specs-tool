@@ -4,18 +4,15 @@ Easy to use testing tool for writing specifications and acceptance tests
 # Steps to use Specs 
 
 1. Unzip the file ec-specs-tool.zip into a directory, say 'c:\tools\ec-specs-tool'
- 
 2. The directory structure under 'c:\tools\ec-specs-tool' should look like this:
  - /samples
  - /utils
  - ec-specs
  - ec-specs.bat 
- 
 3. Make sure that Java 8 is available on the system as either a JDK or a JRE. Open a command terminal and type the following command to confirm the java version:
 > java -version
 
 If the command does not return java 8 in the version information, then make sure JDK 8 or JRE 8 is installed and the PATH environment variable is set to point to the installed Java 8 version.
- 
 4. Open a command terminal and type the following to run the samples/BasicSpec.groovy specification test.
 > c:\tools\ec-specs-tool\ec-specs.bat c:\tools\ec-specs-tool\samples\BasicSpec.groovy
 
@@ -26,7 +23,6 @@ assuming the zip file is extracted in /opt/tools/ec-spec-tool:
 a) chmod +x /opt/tools/ec-spec-tool/ec-spec
 b) /opt/tools/ec-spec-tool/ec-spec /opt/tools/ec-spec-tool/ec-spec/samples/BasicSpec.groovy
 ```
-
 5. The tool will download the gradle files (one time deal), then compile the *BasicSpec.groovy* file before running the tests against the ElectricFlow server on localhost.
 6. 
 You can use the following command to point to a server on another system:
