@@ -13,20 +13,21 @@ Easy to use testing tool for writing specifications and acceptance tests
 > java -version
 
 If the command does not return java 8 in the version information, then make sure JDK 8 or JRE 8 is installed and the PATH environment variable is set to point to the installed Java 8 version.
+
 4. Open a command terminal and type the following to run the samples/BasicSpec.groovy specification test.
 > c:\tools\ec-specs-tool\ec-specs.bat c:\tools\ec-specs-tool\samples\BasicSpec.groovy
 
-```
-On *nix system, we need to grant execute permission on the ex-spec script first, 
-so use the following commands to run the samples/BasicSpec.groovy specification test, 
-assuming the zip file is extracted in /opt/tools/ec-spec-tool:
-a) chmod +x /opt/tools/ec-spec-tool/ec-spec
-b) /opt/tools/ec-spec-tool/ec-spec /opt/tools/ec-spec-tool/ec-spec/samples/BasicSpec.groovy
-```
+  ```
+  On *nix system, we need to grant execute permission on the ex-spec script first, 
+  so use the following commands to run the samples/BasicSpec.groovy specification test, 
+  assuming the zip file is extracted in /opt/tools/ec-spec-tool:
+  a) chmod +x /opt/tools/ec-spec-tool/ec-spec
+  b) /opt/tools/ec-spec-tool/ec-spec /opt/tools/ec-spec-tool/ec-spec/samples/BasicSpec.groovy
+  ```
 5. The tool will download the gradle files (one time deal), then compile the *BasicSpec.groovy* file before running the tests against the ElectricFlow server on localhost.
-6. 
-You can use the following command to point to a server on another system:
-> c:\tools\ec-specs-tool\ec-specs.bat c:\tools\ec-specs-tool\samples\BasicSpec.groovy --server hostname
+ 
+  You can use the following command to point to a server on another system:
+  > c:\tools\ec-specs-tool\ec-specs.bat c:\tools\ec-specs-tool\samples\BasicSpec.groovy --server hostname
  
 That's it!
 You can use the specification tests in c:\tools\ec-specs-tool\samples as reference.
