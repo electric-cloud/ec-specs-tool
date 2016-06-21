@@ -45,7 +45,7 @@ If your system does not have internet access, you need to take the additional st
 * Copy it in c:\tools\ec-specs-tool\distributions
 * Then change in the C:\ec-specs-tool\utils\graddle\wrapper\gradle-wrapper.properties
   * distributionUrl=https\://services.gradle.org/ditributions/gradle-2.9-bin.zip into
-  * distributionUrl=file\:///C:/ec-specs-tool/ditributions/gradle-2.9-bin.zip
+  * distributionUrl=file\:///C:/tools.ec-specs-tool/distributions/gradle-2.9-bin.zip
 
 # Spock Reference Documentation
 http://spockframework.github.io/spock/docs/1.0/index.html
