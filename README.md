@@ -23,7 +23,7 @@ https://github.com/electric-cloud/ec-specs-tool/releases/latest
 > c:\tools\ec-specs-tool\ec-specs.bat c:\tools\ec-specs-tool\samples\BasicSpec.groovy
 
   ```
-  On *nix system, we need to grant execute permission on the ex-spec script first, 
+  On *nix system, we need to grant execute permission on the ec-spec script first, 
   so use the following commands to run the samples/BasicSpec.groovy specification test, 
   assuming the zip file is extracted in /opt/tools/ec-spec-tool:
   a) chmod +x /opt/tools/ec-spec-tool/ec-spec
