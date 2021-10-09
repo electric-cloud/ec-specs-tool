@@ -37,6 +37,9 @@ https://github.com/electric-cloud/ec-specs-tool/releases/latest
 That's it!
 You can use the specification tests in c:\tools\ec-specs-tool\samples as reference.
 
+# Spock Test Support File ("SpockTestSupport.groovy")
+[SpockTestSupport.groovy reference](SpockTestSupport.md)
+
 # Offline mode
 
 If your system does not have internet access, you need to take the additional steps
