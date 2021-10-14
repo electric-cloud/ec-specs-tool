@@ -1,6 +1,4 @@
 
-# SpockTestSupport.groovy
-
 # Intro
 This document describes the contents of SpockTestSupport.groovy and gives some examples of how it might be used.
 
