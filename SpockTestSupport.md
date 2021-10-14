@@ -13,10 +13,11 @@ Each Spock specification, a groovy class, should extend Spock’s “Specificati
 * “setup” Must be the first block used, and it may not be repeated.  If you do NOT specify a “setup” block then everything up to the first block is assumed to be setup.
 * “when” and “then” always occur together.  “when” describes or implements a required state and “then” describes the conditions that must hold true as a result.  When/then pairs may be repeated. No assert statement is needed in the “then” block, just supply a boolean expression.  For example:
 
-    when:
-    def aVariable = 10
-    then:
-     aVariable == 10
+        when:
+        def aVariable = 10
+        then:
+        aVariable == 10
+      
 * “cleanup” may only be followed by a where block, and may not be repeated.  It is used as similarly named functions to free up resources etc.  It runs even if the feature method throws an exception!
 * “where” always comes last and is used to describe the data that should be used to drive the feature method (test).  Spock where blocks provide for an easy to read tabular format to drive “sets” of variable values for testing multiple scenarios.
 * “expect” can used where it makes sense syntactically to combine when/then into one e.g. “expect: Math.abs(-12) == 12”
@@ -65,8 +66,7 @@ Evaluate the DSL in dslScript with the CD Server.  This can be used to create, m
 
 Internally, these functions will respond to SERVER_UNAVAILABLE errors by making another request that attempts to wait for the server.  The function also update some summary internal counters.
 
-| `def result = dsl "application 'myapp', projectName: 'myproj'"` | 
-| --- |
+    def result = dsl "application 'myapp', projectName: 'myproj'"
 
 Internally the dsl functions call
 * toJson(json)
