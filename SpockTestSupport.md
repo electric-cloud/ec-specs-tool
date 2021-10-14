@@ -1,8 +1,6 @@
 
 # SpockTestSupport.groovy
 
-## NMB-28395
-
 # Intro
 This document describes the contents of SpockTestSupport.groovy and gives some examples of how it might be used.
 
