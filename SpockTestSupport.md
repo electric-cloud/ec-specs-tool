@@ -1,3 +1,4 @@
+
 # SpockTestSupport.groovy
 
 ## NMB-28395
@@ -15,10 +16,11 @@ Each Spock specification, a groovy class, should extend Spock’s “Specificati
 “Labeled blocks” are another feature of Spock.  They are simple labels that describe familiar test chronology and enforce some simple rules:
 * “setup” Must be the first block used, and it may not be repeated.  If you do NOT specify a “setup” block then everything up to the first block is assumed to be setup.
 * “when” and “then” always occur together.  “when” describes or implements a required state and “then” describes the conditions that must hold true as a result.  When/then pairs may be repeated. No assert statement is needed in the “then” block, just supply a boolean expression.  For example:
- * when:
-  def aVariable = 10
-then:
-  aVariable == 10
+
+    when:
+    def aVariable = 10
+    then:
+     aVariable == 10
 * “cleanup” may only be followed by a where block, and may not be repeated.  It is used as similarly named functions to free up resources etc.  It runs even if the feature method throws an exception!
 * “where” always comes last and is used to describe the data that should be used to drive the feature method (test).  Spock where blocks provide for an easy to read tabular format to drive “sets” of variable values for testing multiple scenarios.
 * “expect” can used where it makes sense syntactically to combine when/then into one e.g. “expect: Math.abs(-12) == 12”
@@ -93,111 +95,149 @@ The similarly named functions are short-hand for various outcomes:
 * jobSucceeded checks for outcome = ‘success’
 
 # Pipeline Compliance Example
+    package com.electriccloud.spec  
+    
+    import org.junit.jupiter.api.Tag  
+  
+    @Tag("com.electriccloud.spec.categories.CoreDeployTests")  
+    class RunCatalogItemTransactionSpec  
+        extends SpockTestSupport {  
+  
+        def "pipeline compliance check"(projectNameToTest, pipelineNameToTest) {  
+        def pipelineToTest  
+        def stagesToTest  
+        def args = [projectName: projectNameToTest]  
+        args << [pipelineName: pipelineNameToTest]  
+        given: "One or more pipelines are already created"
+        
+        when: "pipeline is loaded"  
+        def pipelineResult = dsl("""  
+    getPipeline projectName: '$args.projectName', pipelineName: '$args.pipelineName'  
+    """, args)  
+  
+        then: "pipeline loads"  
+        waitUntil {  
+            assert pipelineResult?.pipeline  
+            pipelineToTest = pipelineResult.pipeline  
+            assert pipelineToTest  
+        }  
+  
+        and: "pipeline is compliant"  
+        pipelineToTest.projectName ==~ /compliance.*/ // under proper project  
+        pipelineToTest.pipelineName ==~ /test.*/ // name is test*  
+        pipelineToTest.stageCount == "2" // it has 2 stages  
+        pipelineToTest.stageCount.toInteger() == 2 // OR ... it has 2 stages  
+        
+        when: "stages are loaded"  
+        def stagesResult = dsl( """  
+    getStages projectName: '$args.projectName', pipelineName: '$args.pipelineName'  
+    """, args)  
+  
+        then: "stages load"  
+        waitUntil {  
+            assert stagesResult?.stage  
+            stagesToTest = stagesResult.stage  
+            assert stagesToTest  
+        }  
+       and: "stages are compliant"  
+       stagesToTest[0].stageName == "dev"  
+       stagesToTest[0].taskCount == "2"  
+       stagesToTest[0].gate[0].gateType == "PRE"  
+       stagesToTest[0].gate[0].manualApproval == "1"  
+       stagesToTest[0].gate[1].gateType == "POST"  
+       stagesToTest[1].stageName == "qa"  
+       stagesToTest[1].taskCount == "2"  
+       stagesToTest[1].gate[0].gateType == "PRE"  
+       stagesToTest[1].gate[1].gateType == "POST"  
+  
+       cleanup:  
+       //remove any test only artifacts  
+  
+       where:  
+       projectNameToTest     | pipelineNameToTest  
+       "compliance project" | "testpipeline"  
+      }  
+    }
 
-| `package com.mypackage.spec`
 
-`class PipelineComplianceSpec extends SpockTestSupport {`
-`    def pipelineNameRule = “”`
-`    def “pipeline follows naming standards”() {`
-`        setup:`
-`            def projectName = “testProject”`
-`        given:`
-`            pipeline != null`
-`        expect: `
-`            pipeline.getName() == pipeline.getName().regex(“namerule”)`
-`        cleanup:`
-`        where: `
-`        [pipeline] << getPipelines(projectName)`
-`    }`
-`    `
-`    def getPipelines(projectName) {`
-`        def response = dsl "getPipelines projectName: "$projectName""`
-`    }`
-
-`} ` | 
-| --- |
 
 # System Example
 
-| `<<< a spock specification which describes the system>>>`
- | 
-| --- |
+    <<< a spock specification which describes the system>>>
 
 # Other Examples
 
 ## doCleanupSpec, doSetupSpec
-| `class ACleanupAndSetupSpec extends SpockTestSupport {`
+    class ACleanupAndSetupSpec extends SpockTestSupport {
 
-`    @Override`
-`    def doSetupSpec() {`
-`        // Runs once before this specification`
-`        def response = dsl "runProcedure projectName: 'projTest', procedureName: 'procTest'"`
-`        waitUntil {`
-`            assert jobStatus(response.jobId).status == 'completed'`
-`        }`
-`        assert jobStatus(response.jobId).outcome == 'success'`
-`    }`
+    @Override
+    def doSetupSpec() {
+        // Runs once before this specification`
+        def response = dsl "runProcedure projectName: 'projTest', procedureName: 'procTest'"
+        waitUntil {
+            assert jobStatus(response.jobId).status == 'completed'
+        }
+        assert jobStatus(response.jobId).outcome == 'success'
+    }
 
-`    @Override`
-`    def doCleanupSpec() {`
-`        // Runs once after this specification`
-`        dslFile 'folder/cleanup.dsl'`
-`    }`
+    @Override
+    def doCleanupSpec() {
+        // Runs once after this specification
+        dslFile 'folder/cleanup.dsl'
+    }
 
-`    def "A Test"() {`
-`… (continued) … ` | 
-| --- |
+    def "A Test"() {
+    … (continued) …  
 
-`doSetupSpec is provided as a means to run initialization before any tests are run.  Spock is designed to run setupSpec before the tests that make up the specification.  SpockTestSupport uses setupSpec to create connections to the SDA platform server and login; do not override setupSpec.  doSetupSpec runs after SpockTestSupport’s setupSpec routine.`
+doSetupSpec is provided as a means to run initialization before any tests are run.  Spock is designed to run setupSpec before the tests that make up the specification.  SpockTestSupport uses setupSpec to create connections to the SDA platform server and login; do not override setupSpec.  doSetupSpec runs after SpockTestSupport’s setupSpec routine.
 
 The counterpart that performs tear-down logic runs after all tests have run is doCleanupSpec.  It runs BEFORE Spock’s “native” cleanupSpec routine.  Similarly, SpockTestSupport uses cleanupSpec to logout and log “time taken”; do not override cleanupSpec.
 
 To run your own code during spec setup and tear down (in conjunction with SpockTestSupport) use doSetupSpec and doCleanupSpec.  If you override setupSpec or cleanupSpec you will lose SDA platform setup logic.
 
 ## cleanup, setup
-| `class BCleanupAndSetupTests extends SpockTestSupport {`
+    class BCleanupAndSetupTests extends SpockTestSupport {
 
-`    def cleanup() {`
-`        // This runs after every test`
-`        //  and overwrites the cleanup procedure`
-`        //  defined in SpockTestSupport`
+    def cleanup() {
+        // This runs after every test
+        //  and overwrites the cleanup procedure
+        //  defined in SpockTestSupport
 
-`    }`
+    }
 
-`    def setup() {`
-`        // This runs before every test`
-`        //  and overwrites the setup procedure`
-`        //  defined in SpockTestSupport`
-`    }`
+    def setup() {
+        // This runs before every test
+        //  and overwrites the setup procedure
+        //  defined in SpockTestSupport
+    }
+    def "A Test"() {
+    … (continued) …
 
-`    def "A Test"() {`
-`… (continued) … ` | 
-| --- |
 
-`Spock runs setup before each test and cleanup after each test.  Feel free to override these to perform pre-test and post-test logic.`
+Spock runs setup before each test and cleanup after each test.  Feel free to override these to perform pre-test and post-test logic.
 
 ## deleteProjects, waitUntil
-| `def "waitUntil uses jobStatus & jobStep, end with deleteProjects"() {`
+    def "waitUntil uses jobStatus & jobStep, end with deleteProjects"() {
 
-`    when: "procedure with script is invoked"`
-`    def response = dsl "runProcedure projectName: '$projectName', procedureName: 'testProc'"`
+        when: "procedure with script is invoked"
+        def response = dsl "runProcedure projectName: '$projectName', procedureName: 'testProc'"
 
-`    then: "procedure is expected to complete successfully"`
-`    def jobResult`
-`    def jobStepResult`
-`    waitUntil {`
-`        jobResult = jobStatus(response.jobId)`
-`        assert jobResult.status == 'completed'`
-`        jobStepResult = jobStep (response.jobId, 'step1')`
-`    }`
-`    assert jobStepResult.outcome == 'success'`
-`    assert jobResult.outcome == 'success'`
+        then: "procedure is expected to complete successfully"
+        def jobResult
+        def jobStepResult
+        waitUntil {
+           jobResult = jobStatus(response.jobId)
+           assert jobResult.status == 'completed'
+           jobStepResult = jobStep (response.jobId, 'step1')
+        }
+        assert jobStepResult.outcome == 'success'
+        assert jobResult.outcome == 'success'
 
-`    cleanup:`
-`    deleteProjects([proj: projectName])`
+        cleanup:
+        deleteProjects([proj: projectName])
 
-`}` | 
-| --- |
+    }
+
 
 deleteProjects is a convenience to delete a list of projects by means of dsl.  This is frequently used to remove temporary data.
 
@@ -252,11 +292,8 @@ Use DSL to create a userName.
 ### deleteCIBuilds(builds)
 Use DSL to delete CI jobs where builds is an array of maps as follows:
 
-| `[`
-`    [jobname: “the job name”, buildName: “the build name”],`
-`   ….`
-`]` | 
-| --- |
+    [jobname: “the job name”, buildName: “the build name”],
+
 
 ### deleteDataRetentionPolicies(policies)
 Use DSL to delete data retention policies where policies is an array of policy names.
@@ -264,20 +301,15 @@ Use DSL to delete data retention policies where policies is an array of policy n
 ### deleteProjects(projectsMap, foreground = false)
 Use DSL to delete projects where projectsMap is an array of maps as follows:
 
-| `[`
-`    [projectName: “the project name”],`
-`   ….`
-`]` | 
-| --- |
+
+    [projectName: “the project name”],
 
 ### deleteResources = { resourcesMap }
 Use DSL to delete resources where resourcesMap is an array of maps as follows:
 
-| `[`
-`    [resourceName: “the resource name”],`
-`   ….`
-`]` | 
-| --- |
+
+    [resourceName: “the resource name”],
+
 
 ### deleteSearchFilter = {objectType, searchFIlterName, foreground)
 Use DSL to delete a search filter by object type and search filter name.
@@ -288,11 +320,9 @@ Wait until the userName is deleted.  Uses waitUntil()
 ### deleteWorkspaces(workspaces)
 Use DSL to delete work spaces where workspaces is an array of maps as follows:
 
-| `[`
-`    [workspaceName: “the work space name”],`
-`   ….`
-`]` | 
-| --- |
+
+    [workspaceName: “the work space name”],
+
 
 ### deleteZone(zoneName)
 Use DSL to delete the zone.
@@ -309,8 +339,7 @@ A stub so that users may code their own before specification setup.
 ### dsl(String script, args, Closure<?>options)
 Evaluate DSL with the CD Server.  This can be used to create, modify and delete objects in the CD Server’s database, as well as launch jobs, pipeline, etc. in the CD Server.  Calls dsl(script, args, false, options).  Returns a JSON object.
 
-| `dsl "deleteProject 'myproj'"` | 
-| --- |
+    dsl "deleteProject 'myproj'"
 
 ### dsl(String script, args, boolean overwrite, Closure<?>options)
 Evaluate DSL with the CD Server.  This can be used to create, modify and delete objects in the CD Server’s database, as well as launch jobs, pipeline, etc. in the CD Server.  Calls  dslWithRawResponse(dslScript, args, overwrite, options). Returns a JSON object.
@@ -327,11 +356,8 @@ Evaluate dslScript on the CD Server and return XML.  Calls dslWithRawResponse an
 ### findObjects(def type, def filters)
 Call findObjects on the CD Server using DSL where type is the type of object to find and filters is an array of maps as follows:
 
-| `[`
-`    [operator: “operator”, propertyName: “property name”, operand1: “operand”],`
-`   ….`
-`]` | 
-| --- |
+    [operator: “operator”, propertyName: “property name”, operand1: “operand”],
+
 Operator may be “and”, “or”, …
 If operator is “and or “or” then propertyName and operand1 are ignored
 
@@ -435,13 +461,12 @@ Issue waitUntil using the default poll.timeout value.
 ### waitUntil(timeout, conditions)
 Issue the supplied conditions using the PollingConditions object until the conditions or timeout.
 Example from “deleteProjects(projectsMap, foreground)”:
-`            `
-| `waitUntil timeout, {`
-`    dsl """`
-`        deleteProject projectName: '$value', foreground: '$foreground'`
-`         """, [:], options`
-`}` | 
-| --- |
+
+    waitUntil timeout, {`
+        dsl ("""
+        deleteProject projectName: '$value', foreground: '$foreground'
+        """, [:], options)
+    }
 
 ### workflowCompleted(projectName, workflowName)
 
