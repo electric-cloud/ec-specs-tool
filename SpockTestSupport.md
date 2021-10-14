@@ -67,6 +67,9 @@ Evaluate the DSL in dslScript with the CD Server.  This can be used to create, m
 Internally, these functions will respond to SERVER_UNAVAILABLE errors by making another request that attempts to wait for the server.  The function also update some summary internal counters.
 
     def result = dsl "application 'myapp', projectName: 'myproj'"
+    // Note interaction between groovy and spock may cause you to need parentheses
+    //  for function calls so the following is equivalent
+    def result = dsl ("application 'myapp', projectName: 'myproj'")
 
 Internally the dsl functions call
 * toJson(json)
