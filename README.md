@@ -1,7 +1,7 @@
 # Introduction to ec-specs-tool
 Easy to use testing tool for writing specifications and acceptance tests.
 
-The Spock Framework can be used to test and verify SDA Platform models. This may be useful when models are created on one instance of SDA then promoted to another. Spock can be used in a test-driven fashion for model creation and used to verify that the models in target instance match the design specifications. This document describes the contents of SpockTestSupport.groovy and gives some examples of how it might be used.
+The Spock Framework can be used to test and verify SDA Platform models. This may be useful when models are created on one instance of SDA then promoted to another. Spock can be used in a test-driven fashion for model creation and used to verify that the models in a target instance match the design specifications. This document describes the contents of SpockTestSupport.groovy and gives some examples of how it might be used.
 
 
 # Latest release
