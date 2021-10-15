@@ -50,15 +50,14 @@ If your system does not have internet access, you need to take the additional st
   * distributionUrl=https\://services.gradle.org/ditributions/gradle-2.9-bin.zip into
   * distributionUrl=file\:///C:/tools.ec-specs-tool/distributions/gradle-2.9-bin.zip
 
-# Spock Reference Documentation
-http://spockframework.github.io/spock/docs/1.0/index.html
 
+# Spock Feature Summary
+Spock is a test framework for Groovy and Java; its documentation is available at the link below:
+[Spock Framework Reference Documentation](https://spockframework.org/spock/docs/1.0/index.html)
 Recommended:
 * Chapter 3. Spock Primer
 * Chapter 4. Data Driven Testing
 
-# Spock Feature Summary
-Spock is a test framework for Groovy and Java; its documentation is available here: [https://spockframework.org/spock/docs/1.0/index.html](https://spockframework.org/spock/docs/1.0/index.html)
 
 Spock is intended to make test creation easy AND to encourage easy to read documentation of behavior.  For that reason the groovy files that contain Spock tests are often called “specifications”.
 
