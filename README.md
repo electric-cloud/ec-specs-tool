@@ -52,7 +52,7 @@ If your system does not have internet access, you need to take the additional st
 
 
 # Spock Feature Summary
-Spock is a test framework for Groovy and Java; its documentation is available at the link below:
+Spock is a test framework for Groovy and Java; its documentation is available at this link:
 [Spock Framework Reference Documentation](https://spockframework.org/spock/docs/1.0/index.html)
 Recommended:
 * Chapter 3. Spock Primer
