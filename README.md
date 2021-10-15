@@ -1,11 +1,14 @@
-# ec-specs-tool
-Easy to use testing tool for writing specifications and acceptance tests
+# Introduction to ec-specs-tool
+Easy to use testing tool for writing specifications and acceptance tests.
+
+The Spock Framework can be used to test and verify SDA Platform models. This may be useful when models are created on one instance of SDA then promoted to another. Spock can be used in a test-driven fashion for model creation and used to verify that the models in target instance match the design specifications. This document describes the contents of SpockTestSupport.groovy and gives some examples of how it might be used.
+
 
 # Latest release
 
 https://github.com/electric-cloud/ec-specs-tool/releases/latest
 
-# Steps to use Specs 
+# Installation Instructions 
 
 1. Unzip the file ec-specs-tool.zip into a directory, say 'c:\tools\ec-specs-tool'
 2. The directory structure under 'c:\tools\ec-specs-tool' should look like this:
@@ -37,7 +40,7 @@ https://github.com/electric-cloud/ec-specs-tool/releases/latest
 That's it!
 You can use the specification tests in c:\tools\ec-specs-tool\samples as reference.
 
-# Offline mode
+## Offline mode
 
 If your system does not have internet access, you need to take the additional steps
 
@@ -54,10 +57,7 @@ Recommended:
 * Chapter 3. Spock Primer
 * Chapter 4. Data Driven Testing
 
-# Spock Test Support File ("SpockTestSupport.groovy")
-The Spock Framework can be used to test and verify SDA Platform models. This may be useful when models are created on one instance of SDA then promoted to another. Spock can be used in a test-driven fashion for model creation and used to verify that the models in target instance match the design specifications. This document describes the contents of SpockTestSupport.groovy and gives some examples of how it might be used.
-
-## Spock Feature Summary
+# Spock Feature Summary
 Spock is a test framework for Groovy and Java; its documentation is available here: [https://spockframework.org/spock/docs/1.0/index.html](https://spockframework.org/spock/docs/1.0/index.html)
 
 Spock is intended to make test creation easy AND to encourage easy to read documentation of behavior.  For that reason the groovy files that contain Spock tests are often called “specifications”.
@@ -77,11 +77,11 @@ Each Spock specification, a groovy class, should extend Spock’s “Specificati
 * “where” always comes last and is used to describe the data that should be used to drive the feature method (test).  Spock where blocks provide for an easy to read tabular format to drive “sets” of variable values for testing multiple scenarios.
 * “expect” can used where it makes sense syntactically to combine when/then into one e.g. “expect: Math.abs(-12) == 12”
 
-#### "mocking" in Spock
+### "mocking" in Spock
 A common testing problem is how to mimic the behavior of complex classes in order to test some other piece of code.  Spock can mock objects from concrete classes with a simple call to Mock().  For example: “def complexClassInstance = Mock(complexClass)”  With no other settings this would return a default value for any method called (false, 0, or null).
 
-## Purpose of SpockTestSupport.groovy
-SpockTestSupport.groovy provides tools  to make testing objects defined in the SDA Platform easier.   There are several utility functions defined such as “jobCompleted” to test if a job-id has completed.  Also SpockTestSupport makes use of setup(), setupSpec(), and cleanupSpec() routines to check the status of the SDA Platform service, login, and logout.
+# Purpose of SpockTestSupport.groovy
+SpockTestSupport.groovy provides tools to make testing objects defined within the SDA Platform easier.  There are several utility functions defined such as “jobCompleted” to test if a job-id has completed.  Also SpockTestSupport makes use of setup(), setupSpec(), and cleanupSpec() routines to check the status of the SDA Platform service, login, and logout etc.
 The function templates “doSetupSpec” and “doCleanupSpec” provide hooks to customize set up and clean up.
 
 ## Commonly Used Functions
