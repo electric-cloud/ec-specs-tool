@@ -112,8 +112,8 @@ The similarly named functions are short-hand for various outcomes:
         
         when: "pipeline is loaded"  
         def pipelineResult = dsl("""  
-    getPipeline projectName: '$args.projectName', pipelineName: '$args.pipelineName'  
-    """, args)  
+            getPipeline projectName: '$args.projectName', pipelineName: '$args.pipelineName'  
+        """, args)  
   
         then: "pipeline loads"  
         waitUntil {  
@@ -130,8 +130,8 @@ The similarly named functions are short-hand for various outcomes:
         
         when: "stages are loaded"  
         def stagesResult = dsl( """  
-    getStages projectName: '$args.projectName', pipelineName: '$args.pipelineName'  
-    """, args)  
+            getStages projectName: '$args.projectName', pipelineName: '$args.pipelineName'  
+        """, args)  
   
         then: "stages load"  
         waitUntil {  
