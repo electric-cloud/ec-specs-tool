@@ -162,7 +162,45 @@ The similarly named functions are short-hand for various outcomes:
 
 # System Example
 
-    <<< a spock specification which describes the system>>>
+    def "Environment Compliance" () {
+        def sout = new StringBuilder()
+        def serr = new StringBuilder()
+
+        when: "check disk space on root"
+        def proc = 'df --output=pcent /'.execute()
+        proc.consumeProcessOutput(sout, serr)
+        proc.waitForOrKill(1000)
+
+        then: "disk space has 20% or more free"
+        sout != null
+        sout.toString().split("\n")[1].minus(" ").minus("%").toInteger() < 80
+
+        when: "check memory"
+        sout.setLength(0)
+        serr.setLength(0)
+        proc = 'free -g'.execute()
+        proc.consumeProcessOutput(sout, serr)
+        proc.waitForOrKill(1000)
+
+        then: "We have installed proper memory"
+        sout != null
+        (sout.toString().split("\n")[1] =~ ~/\ +(\d+)\ +/)[0][1].toInteger() > 20 // 20 GB or more installed
+
+        when: "Check SDA Install"
+        def versionResult = dsl("getVersions()")
+        def testServerVersion
+
+        then: "version information loads"
+        waitUntil {
+            assert versionResult?.serverVersion
+            testServerVersion = versionResult?.serverVersion
+            assert testServerVersion
+        }
+
+        and: "versions are correct"
+        testServerVersion.version == "10.3.0.0"
+        testServerVersion.schemaVersion == "106"
+    }
 
 # Other Examples
 
