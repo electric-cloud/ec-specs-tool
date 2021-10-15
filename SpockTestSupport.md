@@ -1,6 +1,6 @@
 
 # Intro
-This document describes the contents of SpockTestSupport.groovy and gives some examples of how it might be used.
+The Spock Framework can be used to test and verify SDA Platform models. This may be useful when models are created on one instance of SDA then promoted to another. Spock can be used in a test-driven fashion for model creation and used to verify that the models in target instance match the design specifications. This document describes the contents of SpockTestSupport.groovy and gives some examples of how it might be used.
 
 # Spock Feature Summary
 Spock is a test framework for Groovy and Java; its documentation is available here: [https://spockframework.org/spock/docs/1.0/index.html](https://spockframework.org/spock/docs/1.0/index.html)
@@ -22,6 +22,7 @@ Each Spock specification, a groovy class, should extend Spock’s “Specificati
 * “where” always comes last and is used to describe the data that should be used to drive the feature method (test).  Spock where blocks provide for an easy to read tabular format to drive “sets” of variable values for testing multiple scenarios.
 * “expect” can used where it makes sense syntactically to combine when/then into one e.g. “expect: Math.abs(-12) == 12”
 
+### "mocking" in Spock
 A common testing problem is how to mimic the behavior of complex classes in order to test some other piece of code.  Spock can mock objects from concrete classes with a simple call to Mock().  For example: “def complexClassInstance = Mock(complexClass)”  With no other settings this would return a default value for any method called (false, 0, or null).
 
 # Purpose of SpockTestSupport.groovy
